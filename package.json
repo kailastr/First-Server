@@ -1,0 +1,19 @@
+{
+  "name": "first-server",
+  "version": "1.0.0",
+  "description": "My first Node JS server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kailastr/First-Server.git"
+  },
+  "author": "Kailas T R",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kailastr/First-Server/issues"
+  },
+  "homepage": "https://github.com/kailastr/First-Server#readme"
+}
