@@ -2,12 +2,37 @@ const http = require('http'); // this is a package import
 
 const port = 2255; //created a local port number
 
-http.createServer((request, Response) => {
-    Response.writeHead(200, { 'Content-Type': 'text/html' });
-    Response.write("<h1>Hello, this is from My first server</h1>");
-    Response.write("<p>Hey user How is your experience in this server ??");
-    Response.end();
+const todoList = ["Complete Node Bytes", "Play Cricket", "skilled in Football"];
 
+http.createServer((req, res) => {
+
+    const { method, url } = req;
+
+    if (url === "/todos") {
+        if (method === "GET") {
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.write(todoList.toString());
+        } else if (method === "POST") {
+            let body = "";
+            req
+                .on('error', (err) => {
+                    console.error(err);
+                })
+                .on('data', (chunk) => {
+                    body += chunk;
+                })
+                .on('end', () => {
+                    body = JSON.parse(body); //converting the body of chunk to a JSON type
+                    console.log("data : ", body);
+                })
+        } else {
+            res.writeHead(501);
+        }
+    } else {
+        res.writeHead(401);
+    }
+
+    res.end();
 }).listen(port, () => { //callback function
     console.log(`Nodejs server started on port ${port}`);
 });
