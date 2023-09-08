@@ -6,13 +6,14 @@ const todoList = ["Complete Node Bytes", "Play Cricket", "skilled in Football"];
 
 http.createServer((req, res) => {
 
-    const { method, url } = req;
+    const { method, url } = req; //object destructuring
 
     if (url === "/todos") {
         if (method === "GET") {
             res.writeHead(200, { 'Content-Type': 'text/html' });
             res.write(todoList.toString());
-        } else if (method === "POST") {
+        }
+        else if (method === "POST") {
             let body = "";
             req
                 .on('error', (err) => {
@@ -23,9 +24,37 @@ http.createServer((req, res) => {
                 })
                 .on('end', () => {
                     body = JSON.parse(body); //converting the body of chunk to a JSON type
-                    console.log("data : ", body);
+                    //console.log("data after POST : ", body);
+                    let newTodo = todoList;
+                    newTodo.push(body.items);
+                    console.log(newTodo);
+                    res.writeHead(200);
                 })
-        } else {
+        }
+        else if (method === "DELETE") {
+            let body = "";
+            req
+                .on('error', (err) => {
+                    console.error(err);
+                })
+                .on('data', (chunk) => {
+                    body += chunk;
+                })
+                .on('end', () => {
+                    body = JSON.parse(body);
+                    let deleteThis = body.items;
+
+                    for (let i = 0; i < todoList.length; i++) { //for loop to check if the given word is present in the given array. Instead of for loop we could even use 'find' / 'search' / ...
+                        if (todoList[i] === deleteThis) {
+                            todoList.splice(i, 1);
+                            break;
+                        }
+                    }
+
+                    res.writeHead(201);
+                })
+        }
+        else {
             res.writeHead(501);
         }
     } else {
